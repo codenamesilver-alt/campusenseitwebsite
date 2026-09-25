@@ -1,0 +1,20 @@
+# Normalize line endings to LF in the repository.
+# Windows checkouts get LF too, so index.html and api/contact.js are
+# not silently rewritten with CRLF on clone.
+* text=auto eol=lf
+
+# Files Git should treat as binary, never diff or normalize.
+*.mp3 binary
+*.mp4 binary
+*.mov binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.ico binary
+*.woff binary
+*.woff2 binary
+
+# Keep lockfile diffs readable and stable.
+package-lock.json linguist-generated=true -diff
