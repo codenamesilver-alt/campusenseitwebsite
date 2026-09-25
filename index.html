@@ -1,0 +1,1955 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Campusense IT — Enterprise Software, Reimagined</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <style>
+    :root {
+      --bg: #070d0a;
+      --bg-2: #0b140f;
+      --surface: #0f1a13;
+      --surface-2: #141f17;
+      --border: rgba(80, 220, 140, 0.14);
+      --text: #e8f5ee;
+      --muted: #9fb8a8;
+      --green: #3ddc84;
+      --green-2: #2fbf6d;
+      --green-glow: rgba(61, 220, 132, 0.45);
+      --dark: #040806;
+      --grad: linear-gradient(135deg, #3ddc84 0%, #1ea35e 100%);
+    }
+
+    * { scrollbar-color: #1ea35e #0b140f; scrollbar-width: thin; }
+    ::-webkit-scrollbar { width: 9px; }
+    ::-webkit-scrollbar-track { background: #0b140f; }
+    ::-webkit-scrollbar-thumb { background: linear-gradient(#3ddc84, #1ea35e); border-radius: 9px; }
+
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+      line-height: 1.65;
+    }
+    h1, h2, h3, h4, h5, .display, .navbar-brand, .btn, .stat-num {
+      font-family: 'Sora', sans-serif;
+    }
+
+    /* Background decor */
+    .bg-grid {
+      position: fixed; inset: 0; z-index: -2;
+      background-image:
+        linear-gradient(rgba(61,220,132,0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(61,220,132,0.05) 1px, transparent 1px);
+      background-size: 52px 52px;
+      mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 30%, transparent 75%);
+      -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 30%, transparent 75%);
+      animation: gridShift 24s linear infinite;
+    }
+    @keyframes gridShift { 0% { background-position: 0 0; } 100% { background-position: 52px 52px; } }
+
+    .bg-glow {
+      position: fixed; z-index: -1; border-radius: 50%;
+      filter: blur(120px); opacity: .35; pointer-events: none;
+    }
+    .glow-1 { width: 480px; height: 480px; top: -140px; left: -140px; background: var(--green-glow); animation: float 14s ease-in-out infinite; }
+    .glow-2 { width: 420px; height: 420px; bottom: -160px; right: -140px; background: rgba(24,120,70,0.5); animation: float 18s ease-in-out infinite reverse; }
+    .glow-3 { width: 380px; height: 380px; top: 40%; left: 55%; background: rgba(61,220,132,0.18); opacity:.25; animation: float 20s ease-in-out infinite 3s; }
+
+    /* Matrix numbers canvas — very light shade */
+    #matrixCanvas {
+      position: fixed; inset: 0; z-index: -1;
+      width: 100vw; height: 100vh;
+      opacity: .45; pointer-events: none;
+      transition: opacity .4s;
+    }
+
+    /* Cybersecurity key & lock background (hiding behind the matrix numbers) */
+    .sec-bg {
+      position: fixed; z-index: -1; pointer-events: none;
+      left: 50%; top: 46%; width: 560px; height: 460px;
+      transform: translate(-50%, -50%);
+      display: flex; align-items: center; justify-content: center;
+      filter: blur(1px);
+      animation: secPress 9s ease-in-out infinite;
+    }
+    .sec-svg {
+      width: 100%; height: 100%;
+      opacity: .55;
+      filter: drop-shadow(0 0 26px rgba(61,220,132,.55));
+      animation: secReveal 7s ease-in-out infinite;
+    }
+    .sec-glow {
+      position: absolute; inset: 6%; border-radius: 34px;
+      background: radial-gradient(ellipse, rgba(61,220,132,.2), transparent 70%);
+      animation: secBreath 8s ease-in-out infinite;
+    }
+    /* Lock body gently breathes */
+    .lock { animation: lockPulse 4.5s ease-in-out infinite; transform-origin: 105px 130px; }
+    .lock-hole { animation: holePulse 4.5s ease-in-out infinite; }
+    /* Key repeatedly tries to unlock: slides toward the lock, nudges, retreats */
+    .key { animation: keyAttempt 7s ease-in-out infinite; }
+    .key-moving {
+      stroke-dasharray: 16 26;
+      animation: keyMarker 7s ease-in-out infinite;
+    }
+    @keyframes secPress {
+      0%, 100% { transform: translate(-50%, -50%) scale(.97); filter: blur(3px); }
+      30% { transform: translate(-50%, -50%) scale(1.05); filter: blur(0px); }
+      45% { transform: translate(-50%, -50%) scale(1.0); filter: blur(2px); }
+      70% { transform: translate(-50%, -50%) scale(1.03); filter: blur(1px); }
+    }
+    @keyframes secReveal {
+      0%, 100% { opacity: .42; filter: blur(2px) drop-shadow(0 0 18px rgba(61,220,132,.5)); }
+      25% { opacity: .8; filter: blur(0px) drop-shadow(0 0 32px rgba(61,220,132,.85)); }
+      35% { opacity: .3; filter: blur(4px) drop-shadow(0 0 8px rgba(61,220,132,.3)); }
+      60% { opacity: .7; filter: blur(0px) drop-shadow(0 0 26px rgba(61,220,132,.8)); }
+      72% { opacity: .28; filter: blur(5px); }
+    }
+    @keyframes secBreath {
+      0%, 100% { transform: scale(1); opacity: .5; }
+      50% { transform: scale(1.28); opacity: 1; }
+    }
+    @keyframes lockPulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.03); opacity: .85; }
+    }
+    @keyframes holePulse {
+      0%, 28% { stroke: url(#secGrad); opacity: 1; }
+      32%, 40% { stroke: #8fffc2; opacity: 1; }
+      44%, 100% { stroke: url(#secGrad); opacity: 1; }
+    }
+    @keyframes keyAttempt {
+      0% { transform: translate(0, 0); }
+      40% { transform: translate(-118px, 2px); }
+      46% { transform: translate(-112px, -1px); }
+      50% { transform: translate(-116px, 1px); }
+      52% { transform: translate(-118px, 0); }
+      70%, 100% { transform: translate(0, 0); }
+    }
+    @keyframes keyMarker {
+      0%, 22% { stroke-opacity: .9; }
+      40% { stroke-opacity: .4; }
+      46% { stroke-opacity: .2; }
+      60%, 100% { stroke-opacity: .9; }
+    }
+
+    /* Aurora / gradient mesh blobs */
+    .aurora { position: fixed; z-index: -1; border-radius: 50%; filter: blur(90px); opacity:.16; pointer-events:none; }
+    .a1 { width: 520px; height: 520px; top: 12%; left: -180px; background: radial-gradient(circle, #13a86a, transparent 70%); animation: drift 22s ease-in-out infinite; }
+    .a2 { width: 460px; height: 460px; bottom: 8%; right: -160px; background: radial-gradient(circle, #3ddc84, transparent 70%); animation: drift 26s ease-in-out infinite 4s; }
+    .a3 { width: 400px; height: 400px; top: 55%; left: 40%; background: radial-gradient(circle, #0c7a4a, transparent 70%); animation: drift 30s ease-in-out infinite 8s; }
+    @keyframes drift { 0%,100% { transform: translate(0,0) scale(1); } 33% { transform: translate(60px,-40px) scale(1.15); } 66% { transform: translate(-50px,30px) scale(.9); } }
+
+    /* Tiny floating particles */
+    .bg-particle {
+      position: fixed; z-index: -1; width: 4px; height: 4px; border-radius:50%;
+      background: var(--green); box-shadow: 0 0 10px var(--green-glow); opacity:.5; pointer-events:none;
+    }
+    .p1 { top: 22%; left: 12%; animation: particleFloat 9s ease-in-out infinite; }
+    .p2 { top: 68%; left: 85%; background:#1ea35e; animation: particleFloat 11s ease-in-out infinite 2s; }
+    .p3 { top: 38%; left: 78%; width:3px; height:3px; animation: particleFloat 8s ease-in-out infinite 4s; }
+    @keyframes particleFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-26px); } }
+
+    /* Expanding pulse ring that traces scroll */
+    .bg-pulse-ring {
+      position: fixed; z-index:-1; width: 100px; height: 100px; border-radius: 50%;
+      border: 1px solid rgba(61,220,132,.35); pointer-events: none;
+      animation: pulseRing 6s ease-out infinite;
+    }
+    @keyframes pulseRing { 0% { transform: scale(.4); opacity:.6; } 80% { transform: scale(9); opacity:0; } 100% { opacity:0; } }
+
+    /* Film grain for depth */
+    .grain {
+      position: fixed; inset: 0; z-index: 9998; pointer-events: none; opacity:.05;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E");
+      mix-blend-mode: overlay;
+    }
+
+    @keyframes float {
+      0%,100% { transform: translate(0,0); }
+      50% { transform: translate(30px,-30px); }
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(36px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes pop {
+      0% { opacity: 0; transform: scale(.8); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+    @keyframes pulseGlow {
+      0%,100% { box-shadow: 0 0 0 0 rgba(61,220,132,.45); }
+      50% { box-shadow: 0 0 0 14px rgba(61,220,132,0); }
+    }
+    @keyframes marquee { 0% { transform: translateX(0);} 100% { transform: translateX(-50%);} }
+    @keyframes orbit { 0% { transform: rotate(0deg);} 100% { transform: rotate(360deg);} }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+    @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+    @keyframes spinSlow { to { transform: rotate(360deg); } }
+    @keyframes floatY { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-14px); } }
+
+    .reveal { opacity: 0; }
+    .reveal.visible { animation: fadeUp .8s cubic-bezier(.16,1,.3,1) forwards; }
+
+    /* Swirl-rotate entrance for product cards */
+    .swirl-card { opacity: 0; transform: scale(.4) rotate(-18deg); }
+    .swirl-card.swirl-in {
+      animation: swirlIn .9s cubic-bezier(.22,1.2,.36,1) forwards;
+    }
+    @keyframes swirlIn {
+      0% { opacity: 0; transform: scale(.3) rotate(-40deg) translateY(40px); filter: blur(8px); }
+      60% { opacity: 1; }
+      80% { transform: scale(1.15) rotate(6deg) translateY(-8px); }
+      100% { opacity: 1; transform: scale(1) rotate(0deg) translateY(0); filter: blur(0); }
+    }
+
+    /* Navbar */
+    .navbar {
+      backdrop-filter: blur(14px);
+      background: rgba(7,13,10,.72);
+      border-bottom: 1px solid transparent;
+      transition: .35s;
+    }
+    .navbar.scrolled { border-bottom: 1px solid var(--border); }
+    .navbar-brand { font-weight: 800; font-size: 1.35rem; letter-spacing: -.5px; }
+    .navbar-brand .dot { color: var(--green); }
+    .nav-link { color: var(--muted); font-weight: 500; margin: 0 .4rem; position: relative; transition: .3s; }
+    .nav-link::after {
+      content:""; position:absolute; left:.6rem; right:100%; bottom:4px; height:2px;
+      background: var(--grad); border-radius:2px; transition:.3s;
+    }
+    .nav-link:hover, .nav-link.active { color: #fff; }
+    .nav-link:hover::after, .nav-link.active::after { right:.6rem; }
+
+    .btn { border-radius: 12px; font-weight: 600; letter-spacing:.2px; }
+    .btn-green { background: var(--grad); color: #04140b; border: none; transition:.3s; }
+    .btn-green:hover { transform: translateY(-2px); box-shadow: 0 12px 30px var(--green-glow); color:#04140b; }
+    .btn-ghost { background: transparent; border:1px solid var(--border); color:var(--text); }
+    .btn-ghost:hover { border-color: var(--green); color: var(--green); transform: translateY(-2px); }
+    .btn-glow { animation: pulseGlow 3s infinite; }
+
+    /* Hero */
+    .hero { min-height: 100vh; display:flex; align-items:center; position:relative; padding-top: 120px; padding-bottom: 80px; }
+    .badge-pill {
+      display:inline-flex; align-items:center; gap:.5rem;
+      background: rgba(61,220,132,.08); border:1px solid var(--border);
+      color: var(--green); font-weight:500; font-size:.8rem;
+      padding:.45rem 1rem; border-radius:50px; letter-spacing:.4px;
+    }
+    .badge-pill .pulse { width:8px; height:8px; border-radius:50%; background:var(--green); animation:blink 1.6s infinite; }
+    .hero-title {
+      font-size: clamp(2.4rem, 5.4vw, 4.1rem);
+      font-weight: 800; line-height: 1.08; letter-spacing: -1.5px; margin: 1.4rem 0 1.2rem;
+    }
+    .grad-text {
+      background: var(--grad);
+      -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent; color: transparent;
+    }
+    .shimmer-text {
+      background: linear-gradient(90deg, #3ddc84, #8fffc2, #1ea35e, #3ddc84);
+      background-size: 200% auto;
+      -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent; color: transparent;
+      animation: shimmer 5s linear infinite;
+    }
+    .hero-sub { color: var(--muted); font-size: 1.12rem; max-width: 560px; }
+    .hero-cta { display:flex; gap:1rem; flex-wrap:wrap; margin-top: 2rem; }
+    .trust { display:flex; align-items:center; gap:.9rem; margin-top:2.6rem; color:var(--muted); font-size:.85rem; }
+    .avatars { display:flex; }
+    .avatars span {
+      width:38px; height:38px; border-radius:50%; border:2px solid var(--bg);
+      display:flex; align-items:center; justify-content:center;
+      font-size:.75rem; font-weight:700; color:#04140b;
+      margin-left:-10px; background: var(--grad);
+    }
+    .avatars span:first-child { margin-left:0; }
+
+    /* Hero visual */
+    .hero-visual { position: relative; perspective: 1000px; }
+    .orbit-ring {
+      position:absolute; inset: -30px; border:1px dashed rgba(61,220,132,.25);
+      border-radius:50%; animation: orbit 30s linear infinite;
+    }
+    .orbit-ring::before, .orbit-ring::after {
+      content:""; position:absolute; width:14px; height:14px; border-radius:50%;
+      background:var(--green); box-shadow:0 0 18px var(--green);
+    }
+    .orbit-ring::before { top:8%; left:12%; }
+    .orbit-ring::after { bottom:12%; right:18%; background:#1ea35e; }
+    .dashboard-card {
+      background: linear-gradient(160deg, rgba(20,31,23,.9), rgba(12,20,16,.95));
+      border:1px solid var(--border); border-radius: 22px;
+      padding: 1.4rem; box-shadow: 0 40px 80px -20px rgba(0,0,0,.7);
+      transform: rotateY(8deg) rotateX(4deg); transition:.5s;
+      position: relative; overflow:hidden;
+    }
+    .dashboard-card::before {
+      content:""; position:absolute; inset:0; border-radius:22px;
+      background: linear-gradient(115deg, transparent 30%, rgba(61,220,132,.18) 50%, transparent 70%);
+      background-size: 240% 100%;
+      animation: shimmer 4.5s linear infinite;
+      pointer-events:none;
+    }
+    .hero-visual:hover .dashboard-card { transform: rotateY(0) rotateX(0); }
+    .d-head { display:flex; align-items:center; gap:.5rem; margin-bottom:1.1rem; }
+    .d-head .dots span { width:10px; height:10px; border-radius:50%; display:inline-block; margin-right:5px; }
+    .d-title { font-size:.8rem; color:var(--muted); margin-left:.5rem; letter-spacing:.3px; }
+    .kpi { display:flex; gap:.8rem; margin-bottom:1.1rem; }
+    .kpi-box {
+      flex:1; background: rgba(255,255,255,.03); border:1px solid var(--border);
+      border-radius:12px; padding:.8rem;
+    }
+    .kpi-box .lbl { font-size:.68rem; color:var(--muted); text-transform:uppercase; letter-spacing:.5px; }
+    .kpi-box .val { font-weight:700; font-size:1.2rem; margin-top:.2rem; font-family:'Sora'; }
+    .kpi-box .val.up { color:var(--green); }
+    .chart-bars { display:flex; align-items:flex-end; gap:.4rem; height:110px; }
+    .chart-bars span {
+      flex:1; background: linear-gradient(180deg, var(--green), #125c37);
+      border-radius:6px 6px 0 0; animation: grow 1.4s cubic-bezier(.16,1,.3,1) forwards;
+    }
+    @keyframes grow { from { height: 0; } }
+    .ai-msg {
+      display:flex; gap:.7rem; align-items:flex-start; background: rgba(61,220,132,.06);
+      border:1px solid var(--border); border-radius:12px; padding:.8rem; margin-top:1.1rem;
+    }
+    .ai-msg i { color:var(--green); font-size:1.1rem; }
+    .ai-msg p { margin:0; font-size:.82rem; color:var(--muted); }
+    .ai-msg strong { color:var(--text); }
+
+    .floating-chip {
+      position:absolute; background: rgba(15,26,19,.95); border:1px solid var(--border);
+      border-radius:14px; padding:.6rem .9rem; font-size:.8rem; font-weight:600;
+      backdrop-filter: blur(8px); box-shadow: 0 20px 40px rgba(0,0,0,.5);
+      animation: float 8s ease-in-out infinite;
+    }
+    .chip-1 { top: 6%; left: -6%; }
+    .chip-2 { bottom: 12%; right: -8%; animation-delay: 2s; }
+    .chip-3 { top: -6%; right: 12%; animation-delay: 1s; }
+
+    /* Scroll indicator */
+    .scroll-ind {
+      position:absolute; left:50%; bottom:28px; transform:translateX(-50%);
+      display:flex; flex-direction:column; align-items:center; gap:.55rem;
+      color:var(--muted); font-size:.7rem; letter-spacing:3px; text-transform:uppercase;
+      opacity:.7;
+    }
+    .scroll-ind .mouse {
+      width:24px; height:38px; border:2px solid rgba(61,220,132,.6); border-radius:14px;
+      display:flex; justify-content:center; padding-top:6px;
+    }
+    .scroll-ind .wheel {
+      width:3px; height:8px; border-radius:3px; background:var(--green);
+      animation: wheelScroll 1.8s ease-in-out infinite;
+    }
+    @keyframes wheelScroll { 0% { transform:translateY(0); opacity:1;} 70% { transform:translateY(14px); opacity:0;} 100% { transform:translateY(0); opacity:0;} }
+
+    /* Decorative rotating tech rings */
+    .tech-ring {
+      position:absolute; border-radius:50%; pointer-events:none;
+      border:1px dashed rgba(61,220,132,.2); opacity:.6;
+    }
+    .hero-ring-1 { width:340px; height:340px; top:50%; left:50%; margin:-170px 0 0 -170px; animation:spinSlow 40s linear infinite; }
+    .hero-ring-1::before {
+      content:""; position:absolute; top:-5px; left:50%; width:10px; height:10px; border-radius:50%;
+      background:var(--green); box-shadow:0 0 16px var(--green);
+    }
+    .hero-ring-2 { width:260px; height:260px; top:50%; left:50%; margin:-130px 0 0 -130px; border-style:solid; border-color:rgba(61,220,132,.14); animation:spinSlow 26s linear infinite reverse; }
+    .hero-ring-2::after {
+      content:""; position:absolute; bottom:-4px; left:20%; width:8px; height:8px; border-radius:50%;
+      background:#8fffc2; box-shadow:0 0 14px #8fffc2;
+    }
+
+    /* Marquee */
+    .marquee-wrap { overflow:hidden; border-top:1px solid var(--border); border-bottom:1px solid var(--border); background: var(--bg-2); }
+    .marquee { display:flex; gap:4rem; width:max-content; animation: marquee 28s linear infinite; padding:1.3rem 0; }
+    .marquee-wrap:hover .marquee { animation-play-state: paused; }
+    .marquee span { font-family:'Sora'; font-weight:600; font-size:1.05rem; color:#55705f; display:flex; align-items:center; gap:.8rem; white-space:nowrap; }
+    .marquee i { color:var(--green); font-size:.7rem; }
+
+    /* Sections */
+    section { position: relative; }
+    .section-title { font-size: clamp(1.9rem, 4vw, 2.8rem); font-weight: 700; letter-spacing:-1px; line-height:1.15; }
+    .section-title .swing { display:inline-block; animation: floatY 4s ease-in-out infinite; }
+    .section-title .swing:nth-child(2){ animation-delay:.4s; }
+    .section-title .swing:nth-child(3){ animation-delay:.8s; }
+    .section-sub { color: var(--muted); max-width: 560px; }
+    .eyebrow {
+      display:inline-flex; align-items:center; gap:.5rem; color:var(--green);
+      font-weight:600; font-size:.8rem; letter-spacing:2px; text-transform:uppercase;
+      position:relative; overflow:hidden;
+    }
+    .eyebrow::before { content:""; width:26px; height:2px; background:var(--grad); transition:width .5s; }
+    .eyebrow:hover::before { width:46px; }
+    .eyebrow::after {
+      content:""; position:absolute; inset:0;
+      background: linear-gradient(115deg, transparent 40%, rgba(255,255,255,.25) 50%, transparent 60%);
+      background-size:250% 100%; animation: shimmer 3.5s linear infinite; pointer-events:none;
+    }
+
+    .card-modern {
+      background: linear-gradient(160deg, var(--surface), var(--bg-2));
+      border:1px solid var(--border); border-radius: 18px; padding: 1.7rem;
+      transition: transform .4s cubic-bezier(.16,1,.3,1), border-color .4s, box-shadow .4s;
+      height: 100%; position: relative; overflow: hidden;
+    }
+    .card-modern::before {
+      content:""; position:absolute; inset:0; border-radius:18px; padding:1px;
+      background: linear-gradient(135deg, rgba(61,220,132,.6), transparent 40%);
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor; mask-composite: exclude;
+      opacity:0; transition:.4s;
+    }
+    .card-modern::after {
+      content:""; position:absolute; top:-50%; left:-50%; width:200%; height:200%;
+      background: conic-gradient(from 0deg, transparent 0deg, rgba(61,220,132,.16) 40deg, transparent 80deg);
+      animation: spinSlow 8s linear infinite; opacity:0; transition:.4s;
+    }
+    .card-modern:hover { transform: translateY(-10px) scale(1.02); border-color: rgba(61,220,132,.4); box-shadow: 0 30px 60px -20px rgba(0,0,0,.7), 0 0 40px rgba(61,220,132,.06); }
+    .card-modern:hover::before, .card-modern:hover::after { opacity:1; }
+    .icon-wrap {
+      width: 54px; height: 54px; border-radius: 14px; background: rgba(61,220,132,.1);
+      border:1px solid var(--border); display:flex; align-items:center; justify-content:center;
+      font-size:1.5rem; color:var(--green); margin-bottom:1.2rem; position:relative;
+      transition: transform .4s cubic-bezier(.34,1.56,.64,1), background .4s, box-shadow .4s;
+    }
+    .card-modern:hover .icon-wrap { transform: rotate(-8deg) scale(1.12); background: rgba(61,220,132,.18); box-shadow: 0 0 30px rgba(61,220,132,.25); }
+    .card-modern h5 { font-weight: 600; margin-bottom:.6rem; transition:.3s; }
+    .card-modern:hover h5 { color: var(--green); }
+    .card-modern p { color: var(--muted); font-size:.95rem; margin:0; }
+    .learn { display:inline-flex; align-items:center; gap:.4rem; color:var(--green); font-weight:600; font-size:.85rem; margin-top:1rem; text-decoration:none; }
+    .learn i { transition:.3s; }
+    .learn:hover i { transform: translateX(4px); }
+
+    /* Journey — interactive milestone explorer */
+    .journey-shell {
+      position: relative; overflow: hidden;
+      display: grid; grid-template-columns: 250px 1fr; gap: 2.4rem;
+      padding: 2.2rem; border-radius: 26px;
+      background: linear-gradient(160deg, rgba(15,26,19,.92), rgba(11,20,15,.94));
+      border: 1px solid var(--border);
+      box-shadow: 0 30px 70px -35px rgba(0,0,0,.9);
+    }
+    .journey-shell::before {
+      content:""; position:absolute; inset:-30% -10% auto -10%; height:75%; pointer-events:none;
+      background: radial-gradient(ellipse at 18% 0%, rgba(61,220,132,.16), transparent 62%);
+    }
+    .journey-shell::after {
+      content:""; position:absolute; inset:0; pointer-events:none; opacity:.4;
+      background-image: radial-gradient(rgba(80,220,140,.16) 1px, transparent 1px);
+      background-size: 22px 22px;
+      mask-image: linear-gradient(180deg, #000, transparent 72%);
+      -webkit-mask-image: linear-gradient(180deg, #000, transparent 72%);
+    }
+
+    /* Year rail */
+    .j-rail { position:relative; z-index:1; display:flex; flex-direction:column; padding-left:2.7rem; }
+    .j-rail::before {
+      content:""; position:absolute; left:11px; top:22px; bottom:22px; width:2px;
+      background: rgba(80,220,140,.14); border-radius:2px;
+    }
+    .j-rail-fill {
+      position:absolute; left:11px; top:22px; width:2px;
+      height: calc(var(--j-progress, 0) * 100%); border-radius:2px;
+      background: var(--grad); box-shadow: 0 0 14px var(--green-glow);
+      transition: height .6s cubic-bezier(.16,1,.3,1);
+    }
+    .j-node {
+      position:relative; width:100%; text-align:left; cursor:pointer;
+      background:transparent; border:0; font-family:inherit;
+      padding: .75rem .6rem; border-radius:12px; color: var(--muted);
+      display:flex; flex-direction:column; gap:.1rem; transition: color .35s, transform .35s, background .35s;
+    }
+    .j-node::before {
+      content:""; position:absolute; left:-2.7rem; top:50%; transform: translateY(-50%);
+      width:14px; height:14px; border-radius:50%;
+      background: var(--bg-2); border:2px solid rgba(80,220,140,.3); transition: .35s;
+    }
+    .j-node .jn-year { font-family:'Sora'; font-weight:700; font-size:1.05rem; letter-spacing:1px; }
+    .j-node .jn-era { font-size:.7rem; letter-spacing:1.8px; text-transform:uppercase; opacity:.7; }
+    .j-node:hover { color: var(--text); transform: translateX(5px); background: rgba(61,220,132,.05); }
+    .j-node[aria-selected="true"] { color: var(--green); background: rgba(61,220,132,.08); }
+    .j-node[aria-selected="true"]::before {
+      background: var(--green); border-color: var(--green);
+      box-shadow: 0 0 0 5px rgba(61,220,132,.14); animation: pulseGlow 2.6s ease-in-out infinite;
+    }
+    .j-node:focus-visible { outline:2px solid var(--green); outline-offset:4px; }
+
+    /* Milestone stage */
+    .j-stage { position:relative; z-index:1; display:grid; align-content:center; min-height:300px; }
+    .j-panel {
+      grid-area: 1 / 1; padding: .3rem .3rem 0;
+      display:grid; grid-template-columns: minmax(0,1fr) minmax(0,290px); gap:2.2rem; align-items:center;
+      opacity:0; visibility:hidden; transform: translateY(18px);
+      transition: opacity .5s ease, transform .5s cubic-bezier(.16,1,.3,1), visibility .5s;
+    }
+    .j-panel.is-active { opacity:1; visibility:visible; transform:none; }
+    .j-panel:focus-visible { outline:2px solid var(--green); outline-offset:8px; border-radius:14px; }
+    .j-copy { min-width:0; }
+    .j-panel-top { display:flex; align-items:center; gap:1.1rem; margin-bottom:1.3rem; }
+    .j-icon {
+      width:58px; height:58px; flex-shrink:0; border-radius:18px;
+      display:grid; place-items:center; font-size:1.5rem; color:#04140b;
+      background: var(--grad); box-shadow: 0 12px 30px -12px rgba(61,220,132,.7);
+      transition: transform .4s cubic-bezier(.34,1.56,.64,1);
+    }
+    .j-panel.is-active .j-icon { animation: pop .5s cubic-bezier(.34,1.56,.64,1) .08s backwards; }
+    .j-year-big {
+      font-family:'Sora'; font-weight:800; font-size: clamp(2.3rem, 5.5vw, 3.3rem);
+      line-height:1; letter-spacing:-2px;
+      background: linear-gradient(120deg, #e8f5ee, #3ddc84);
+      -webkit-background-clip:text; background-clip:text; color:transparent;
+    }
+    .j-era { font-size:.72rem; letter-spacing:2.2px; text-transform:uppercase; color:var(--green); }
+    .j-panel h5 { font-size:1.32rem; font-weight:600; margin-bottom:.7rem; }
+    .j-panel p { color:var(--muted); font-size:1rem; margin:0; max-width:58ch; }
+    .j-chips { list-style:none; padding:0; margin:1.5rem 0 0; display:flex; flex-wrap:wrap; gap:.6rem; }
+    .j-chips li {
+      font-size:.78rem; padding:.42rem .85rem; border-radius:999px;
+      border:1px solid var(--border); background:rgba(61,220,132,.06); color:#cfe0d4;
+    }
+    .j-foot { display:flex; align-items:center; justify-content:space-between; gap:1rem; margin-top:1.7rem; }
+    .j-progress-text {
+      font-family:'Sora'; font-size:.76rem; letter-spacing:2px;
+      text-transform:uppercase; color:var(--muted);
+    }
+    .j-tick {
+      width: 130px; height:3px; border-radius:3px; margin-top:.5rem;
+      background: rgba(80,220,140,.14); overflow:hidden;
+    }
+    .j-tick span { display:block; height:100%; width:0; background:var(--grad); border-radius:3px; }
+    .j-tick.is-running span { animation: jTick 3s linear forwards; }
+    .j-tick.is-paused span { animation-play-state: paused; }
+    @keyframes jTick { from { width:0; } to { width:100%; } }
+    .j-nav { display:flex; gap:.5rem; }
+    .j-btn {
+      width:42px; height:42px; border-radius:12px; display:grid; place-items:center;
+      border:1px solid var(--border); background:rgba(255,255,255,.03);
+      color:var(--text); cursor:pointer; transition:.3s;
+    }
+    .j-btn:hover { border-color:var(--green); color:var(--green); transform:translateY(-2px); }
+    .j-btn:focus-visible { outline:2px solid var(--green); outline-offset:3px; }
+    .j-btn i { line-height:1; }
+    .j-btn[aria-pressed="true"] {
+      border-color: var(--green); color: var(--green);
+      background: rgba(61,220,132,.1);
+    }
+
+    /* Milestone graphic (per-year generative art) */
+    .j-art {
+      position: relative; width:100%; aspect-ratio: 1 / 1;
+      display:grid; place-items:center; pointer-events:none;
+    }
+    .j-art::before {
+      content:""; position:absolute; inset:6%;
+      border-radius:50%;
+      background: radial-gradient(circle at 50% 50%, rgba(61,220,132,.16), transparent 62%);
+      filter: blur(14px);
+    }
+    .j-art svg { position:relative; width:100%; height:100%; overflow:visible; }
+    .j-art .ln { fill:none; stroke: var(--green); stroke-width:1.4; vector-effect: non-scaling-stroke; }
+    .j-art .ln-soft { fill:none; stroke: rgba(80,220,140,.26); stroke-width:1; vector-effect: non-scaling-stroke; }
+    .j-art .ln-dash { fill:none; stroke: rgba(80,220,140,.34); stroke-width:1; stroke-dasharray:4 7; vector-effect: non-scaling-stroke; }
+    .j-art .dot { fill: var(--green); }
+    .j-art .halo { fill:none; stroke: var(--green); stroke-width:1; opacity:.32; vector-effect: non-scaling-stroke; }
+    .j-art .plate { fill: rgba(61,220,132,.08); stroke: rgba(80,220,140,.3); stroke-width:1; vector-effect: non-scaling-stroke; }
+
+    /* shared motion */
+    .j-art .spin-slow { transform-box: view-box; transform-origin: 50% 50%; animation: artSpin 26s linear infinite; }
+    .j-art .spin-rev  { transform-box: view-box; transform-origin: 50% 50%; animation: artSpin 34s linear infinite reverse; }
+    .j-art .spin-mid  { transform-box: view-box; transform-origin: 50% 50%; animation: artSpin 18s linear infinite; }
+    .j-art .breathe   { transform-box: fill-box; transform-origin: center; animation: artBreathe 3.6s ease-in-out infinite; }
+    .j-art .twinkle   { animation: artTwinkle 3s ease-in-out infinite; }
+    .j-art .draw      { stroke-dasharray: 620; stroke-dashoffset: 620; animation: artDraw 2.4s cubic-bezier(.16,1,.3,1) forwards; }
+    .j-art .rise      { transform-box: fill-box; transform-origin: 50% 100%; animation: artRise 1.1s cubic-bezier(.16,1,.3,1) backwards; }
+    .j-art .pulse-node{ transform-box: fill-box; transform-origin: center; animation: artPulse 2.4s ease-in-out infinite; }
+    @keyframes artSpin    { to { transform: rotate(360deg); } }
+    @keyframes artBreathe { 0%,100% { transform: scale(1); opacity:.85; } 50% { transform: scale(1.09); opacity:1; } }
+    @keyframes artTwinkle { 0%,100% { opacity:.15; } 50% { opacity:.9; } }
+    @keyframes artDraw    { to { stroke-dashoffset: 0; } }
+    @keyframes artRise    { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+    @keyframes artPulse   { 0%,100% { transform: scale(1); opacity:1; } 50% { transform: scale(1.5); opacity:.55; } }
+
+    /* 2020 — origin orbit */
+    .j-art .orbit-core { filter: drop-shadow(0 0 8px rgba(61,220,132,.75)); }
+
+    /* 2022 — growth bars */
+    .j-art .bar { fill: url(#jArtGrad); }
+    .j-art .bar-2 { fill: rgba(61,220,132,.4); }
+    .j-art .bar-3 { fill: rgba(61,220,132,.22); }
+
+    /* 2024 — neural mesh */
+    .j-art .mesh { fill:none; stroke: rgba(80,220,140,.22); stroke-width:1; vector-effect: non-scaling-stroke; }
+    .j-art .synapse { fill: var(--green); filter: drop-shadow(0 0 6px rgba(61,220,132,.8)); }
+
+    /* 2026 — orbit globe */
+    .j-art .meridian { fill:none; stroke: rgba(80,220,140,.24); stroke-width:1; vector-effect: non-scaling-stroke; }
+    .j-art .sat-dot { fill: var(--green); filter: drop-shadow(0 0 7px rgba(61,220,132,.9)); }
+
+    /* Pricing — clothesline rig */
+    .price-rig { position:relative; padding-top:5.5rem; }
+    /* Rope is drawn on a 0-1000 grid scaled to the container, so the sag
+       stays in proportion and the two post caps always sit at the edges. */
+    .price-rig .rig-line {
+      position:absolute; top:0; left:0; width:100%; height:60px;
+      overflow:visible; pointer-events:none;
+    }
+    .price-rig .rig-line .rope {
+      fill:none; stroke:rgba(159,184,168,.5); stroke-width:2;
+      stroke-linecap:round;
+    }
+    .price-rig .rig-line .rope-fibre {
+      fill:none; stroke:rgba(159,184,168,.18); stroke-width:5; stroke-linecap:round;
+    }
+    .price-rig .rig-line .post-cap { fill:var(--surface); stroke:rgba(159,184,168,.6); stroke-width:2; }
+
+    /* Each card hangs from the rope and swings as a pendulum.
+       The swing lives on .hang (inner wrapper), never on the .reveal column:
+       the reveal entrance already owns `animation` on the column, and an
+       element can only run one animation, so the card would stay at opacity 0. */
+    .price-rig .hang {
+      display:block; height:100%;
+      position:relative;          /* anchors the peg to this column */
+      transform-origin: 50% 0;    /* pivot at the clip, where the card hangs */
+    }
+    .price-rig .hang-1 { animation: swing 6.5s ease-in-out -0.9s infinite; }
+    .price-rig .hang-2 { animation: swing 6.5s ease-in-out -2.7s infinite; }
+    .price-rig .hang-3 { animation: swing 6.5s ease-in-out -4.5s infinite; }
+    @keyframes swing {
+      0%, 100% { transform: rotate(-.75deg); }
+      50%      { transform: rotate(.75deg); }
+    }
+
+    /* Rope-to-card connector. The cord does not just touch the rope: it is
+       knotted onto it, so the wrap loops around the rope and crosses over
+       itself. The over-crossing strands are drawn last, on top. */
+    .price-rig .peg { position:absolute; top:-5.5rem; left:50%; transform:translateX(-50%); }
+    .price-rig .peg svg { display:block; overflow:visible; }
+    .price-rig .peg .cord { stroke:rgba(159,184,168,.55); stroke-width:1.5; fill:none; stroke-linecap:round; }
+    /* the strand that passes UNDER the rope is dimmed and thin */
+    .price-rig .peg .knot-under { stroke:rgba(159,184,168,.34); stroke-width:1.4; fill:none; stroke-linecap:round; }
+    /* the strand that passes OVER the rope is brighter and thicker */
+    .price-rig .peg .knot-over { stroke:rgba(178,201,186,.95); stroke-width:1.9; fill:none; stroke-linecap:round; }
+    .price-rig .peg .clip-body { fill:var(--surface); stroke:rgba(159,184,168,.7); stroke-width:1.5; }
+    .price-rig .peg .clip-jaw { fill:none; stroke:rgba(159,184,168,.7); stroke-width:1.5; stroke-linecap:round; }
+    .price-rig .col-lg-4:nth-child(2) .peg .clip-body { stroke:var(--green); }
+    .price-rig .col-lg-4:nth-child(2) .peg .cord { stroke:rgba(61,220,132,.75); }
+    .price-rig .col-lg-4:nth-child(2) .peg .clip-jaw { stroke:var(--green); }
+    .price-rig .col-lg-4:nth-child(2) .peg .knot-over { stroke:rgba(120,255,180,1); }
+    .price-rig .col-lg-4:nth-child(2) .peg .knot-under { stroke:rgba(61,220,132,.45); }
+
+    .price-card {
+      background: linear-gradient(160deg, var(--surface), var(--bg-2));
+      border:1px solid var(--border); border-radius:20px; padding:2.2rem 1.8rem;
+      transition:box-shadow .4s, border-color .4s; position:relative; overflow:hidden;
+    }
+    .price-card::before {
+      content:""; position:absolute; top:0; left:-100%; width:100%; height:100%;
+      background: linear-gradient(115deg, transparent 40%, rgba(255,255,255,.05) 50%, transparent 60%);
+      transition:.6s;
+    }
+    .price-card:hover::before { left:100%; }
+    /* Cards hang, so hover lifts without un-straightening the column */
+    .price-card:hover { border-color: rgba(61,220,132,.35); box-shadow:0 30px 60px -20px rgba(0,0,0,.7), 0 0 40px rgba(61,220,132,.06); }
+    .price-rig .hang:hover { animation-play-state:paused; }
+    .price-rig .hang:hover .price-card { transform:translateY(-6px) scale(1.015); }
+    .price-card.featured {
+      background: linear-gradient(160deg, rgba(22,40,28,.9), var(--bg-2));
+      border:1px solid var(--green); animation: glowSoft 3s ease-in-out infinite;
+    }
+    @keyframes glowSoft { 0%,100% { box-shadow:0 0 25px rgba(61,220,132,.15);} 50% { box-shadow:0 0 45px rgba(61,220,132,.4);} }
+    .price-card .tag {
+      position:absolute; top:1.2rem; right:-2.5rem; transform:rotate(45deg);
+      background:var(--grad); color:#04140b; font-size:.7rem; font-weight:700;
+      padding:.3rem 2.6rem; text-transform:uppercase; letter-spacing:1px;
+    }
+    .price-card .plan { color:var(--muted); font-weight:600; letter-spacing:1px; text-transform:uppercase; font-size:.8rem; }
+    .price-card .amount { font-size:2.9rem; font-weight:800; font-family:'Sora'; letter-spacing:-2px; line-height:1.05; }
+    .price-card .amount small { font-size:1rem; color:var(--muted); font-weight:400; letter-spacing:0; }
+    .price-card .amount-label {
+      color: var(--muted); font-size:.72rem; font-weight:600;
+      letter-spacing:2px; text-transform:uppercase; margin: .7rem 0 .2rem;
+    }
+    .price-card ul { list-style:none; padding:0; margin:1.6rem 0; }
+    .price-card ul li { padding:.55rem 0; color:var(--muted); font-size:.93rem; display:flex; gap:.7rem; align-items:center; }
+    .price-card ul li i { color:var(--green); }
+    .price-card.featured ul li { color:var(--text); }
+
+    /* Testimonials */
+    .t-card {
+      background: var(--surface); border:1px solid var(--border); border-radius:18px; padding:1.8rem;
+      height:100%; transition:.4s; position:relative; overflow:hidden;
+    }
+    .t-card::before {
+      content:""; position:absolute; top:-60%; right:-60%; width:120%; height:120%;
+      background: radial-gradient(circle at top right, rgba(61,220,132,.12), transparent 60%);
+      opacity:0; transition:.4s;
+    }
+    .t-card:hover { transform:translateY(-6px); border-color: rgba(61,220,132,.35); }
+    .t-card:hover::before { opacity:1; }
+    .t-stars { color:var(--green); font-size:.8rem; letter-spacing:2px; margin-bottom:1rem; }
+    .t-stars i { transition:.3s; display:inline-block; }
+    .t-card:hover .t-stars i { transform: scale(1.2); animation: pop .4s forwards; }
+    .t-card blockquote { color:#dfece4; font-size:.98rem; }
+    .t-person { display:flex; align-items:center; gap:.9rem; margin-top:1.4rem; }
+    .t-person .avatar-only {
+      width:46px; height:46px; border-radius:50%; background:var(--grad); color:#04140b;
+      display:flex; align-items:center; justify-content:center; font-weight:700;
+      transition:.4s; box-shadow:0 0 0 0 rgba(61,220,132,0);
+    }
+    .t-card:hover .avatar-only { box-shadow:0 0 0 6px rgba(61,220,132,.15); }
+    .t-person h6 { margin:0; font-weight:600; }
+    .t-person small { color:var(--muted); }
+
+    /* Contact */
+    .contact-card {
+      background: linear-gradient(160deg, var(--surface), var(--bg-2));
+      border:1px solid var(--border); border-radius:22px; padding:2.5rem;
+      position:relative; overflow:hidden;
+    }
+    .contact-card::after {
+      content:""; position:absolute; top:0; left:-100%; width:100%; height:100%;
+      background: linear-gradient(115deg, transparent 40%, rgba(255,255,255,.04) 50%, transparent 60%);
+      transition:.7s;
+    }
+    .contact-card:hover::after { left:100%; }
+    .form-control, .form-select {
+      background: rgba(255,255,255,.03); border:1px solid var(--border);
+      color:var(--text); border-radius:12px; padding:.85rem 1rem;
+      transition:.3s;
+    }
+    .form-control:focus, .form-select:focus {
+      background: rgba(255,255,255,.04); border-color: var(--green);
+      box-shadow: 0 0 0 4px rgba(61,220,132,.1); color:var(--text);
+      transform: translateY(-1px);
+    }
+    /* Make the select dropdown item list clearly readable when opened */
+    .form-select,
+    .form-select option,
+    .form-select optgroup {
+      color: #e8f5ee;
+    }
+    .form-select {
+      background-color: #0f1a13;
+      cursor: pointer;
+    }
+    .form-select option {
+      background-color: #0f1a13;
+      color: #e8f5ee;
+    }
+    .form-select option:hover,
+    .form-select option:focus,
+    .form-select option:checked {
+      background-color: #1ea35e;
+      color: #04140b;
+    }
+    .form-control::placeholder { color:#6b8475; }
+    .form-label { font-weight:600; font-size:.85rem; color:#cfe0d4; }
+    .contact-info-item { display:flex; gap:1rem; align-items:flex-start; padding:1rem 0; border-bottom:1px solid var(--border); transition:.3s; }
+    .contact-info-item:last-child { border-bottom:none; }
+    .contact-info-item:hover { transform: translateX(6px); }
+    .contact-info-item .ci { width:46px; height:46px; border-radius:12px; background:rgba(61,220,132,.1); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; color:var(--green); font-size:1.2rem; flex-shrink:0; transition:.4s; }
+    .contact-info-item:hover .ci { background:rgba(61,220,132,.2); transform:rotate(-6deg) scale(1.08); box-shadow:0 0 20px rgba(61,220,132,.2); }
+    .contact-info-item h6 { margin:0 0 .2rem; font-size:.9rem; }
+    .contact-info-item p { margin:0; color:var(--muted); font-size:.9rem; }
+
+    /* Stats */
+    .stat-icon {
+      width:64px; height:64px; margin:0 auto 1rem; border-radius:18px;
+      background: rgba(61,220,132,.08); border:1px solid var(--border);
+      display:flex; align-items:center; justify-content:center;
+      font-size:1.6rem; color:var(--green); position:relative;
+      animation: floatY 4s ease-in-out infinite;
+    }
+    .stat-icon::after {
+      content:""; position:absolute; inset:-6px; border-radius:22px;
+      border:1px dashed rgba(61,220,132,.2); animation: spinSlow 16s linear infinite;
+    }
+
+    /* Footer */
+    .footer { border-top:1px solid var(--border); margin-top: 5rem; padding: 3rem 0 2rem; background: var(--dark); }
+    .footer h6 { font-weight:600; margin-bottom:1rem; }
+    .footer a { color:var(--muted); text-decoration:none; display:block; padding:.3rem 0; transition:.3s; }
+    .footer a:hover { color:var(--green); padding-left:4px; }
+    .footer .brand { font-weight:800; font-size:1.3rem; }
+    /* Brand tagline — matches footer link typography, set in italic */
+    .footer .footer-tagline {
+      color: var(--muted); font-family: 'Inter', sans-serif;
+      font-size: 1rem; font-style: italic; line-height: 1.65;
+      max-width: 300px; margin: 1rem 0 0;
+    }
+    .socials a {
+      width:40px; height:40px; border-radius:50%; border:1px solid var(--border);
+      display:inline-flex; align-items:center; justify-content:center; color:var(--muted); margin-right:.5rem; transition:.3s;
+    }
+    .socials a:hover { border-color: var(--green); color:var(--green); transform:translateY(-3px); }
+
+    @media (max-width: 991.98px) {
+      .journey-shell { grid-template-columns: 1fr; gap: 1.6rem; padding: 1.6rem; }
+      .j-rail {
+        flex-direction: row; padding-left: 0; padding-top: 2.4rem;
+        gap: .4rem; overflow-x: auto; scrollbar-width: none;
+      }
+      .j-rail::-webkit-scrollbar { display: none; }
+      .j-rail::before { left: 0; right: 0; top: 13px; bottom: auto; width: auto; height: 2px; }
+      .j-rail-fill {
+        left: 0; top: 13px; height: 2px; width: calc(var(--j-progress, 0) * 100%);
+        transition: width .6s cubic-bezier(.16,1,.3,1);
+      }
+      .j-node { min-width: 132px; }
+      .j-node::before { left: 50%; top: -2.35rem; transform: translateX(-50%); }
+      .j-node:hover, .j-node[aria-selected="true"] { transform: none; }
+      .j-stage { min-height: 340px; }
+      .j-panel { grid-template-columns: minmax(0,1fr) 200px; gap:1.4rem; }
+    }
+
+    @media (max-width: 767.98px) {
+      .j-panel { grid-template-columns: minmax(0,1fr); gap:1.4rem; }
+      .j-art { max-width: 260px; margin: 0 auto; width: 100%; }
+    }
+
+    @media (max-width: 575.98px) {
+      .journey-shell { padding: 1.25rem; border-radius: 20px; }
+      .j-year-big { letter-spacing:-1px; }
+      .j-panel p { font-size:.95rem; }
+    }
+
+    /* Respect users who ask for less motion */
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+      }
+      /* Graphics stay on screen, they just stop moving */
+      .j-art .spin-slow, .j-art .spin-rev, .j-art .spin-mid,
+      .j-art .breathe, .j-art .twinkle, .j-art .pulse-node {
+        animation: none !important;
+      }
+      .j-art .draw { stroke-dashoffset: 0 !important; animation: none !important; }
+      .j-art .rise { transform: scaleY(1) !important; animation: none !important; }
+      /* Clothesline hangs still, cards hang level */
+      .price-rig .hang-1, .price-rig .hang-2, .price-rig .hang-3 {
+        animation: none !important; transform: none !important;
+      }
+    }
+
+    /* Clothesline rig collapses on small screens: rope is decorative, cards stay flat */
+    @media (max-width: 991.98px) {
+      .price-rig { padding-top: 0; }
+      .price-rig .rig-line { display: none; }
+      .price-rig .peg { display: none; }
+      /* no rope, so nothing to swing from */
+      .price-rig .hang-1, .price-rig .hang-2, .price-rig .hang-3 { animation: none; }
+    }
+
+    /* Floating WhatsApp button (bottom-right) */
+    .whatsapp-btn {
+      position: fixed; right: 24px; bottom: 24px; z-index: 9999;
+      width: 58px; height: 58px;
+      display: flex; align-items: center; justify-content: center;
+      text-decoration: none; color: #fff;
+      background: linear-gradient(135deg, #25D366, #128C7E);
+      border: 2px solid rgba(255,255,255,.9); border-radius: 50%;
+      box-shadow: 0 14px 32px rgba(37,211,102,.4);
+      transition: transform .3s, box-shadow .3s;
+    }
+    .whatsapp-btn:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 18px 40px rgba(37,211,102,.55);
+      color: #fff; text-decoration: none;
+    }
+    .whatsapp-btn i {
+      font-size: 2rem;
+      animation: waPulse 2.4s ease-in-out infinite;
+    }
+    @keyframes waPulse {
+      0%,100% { transform: scale(1); }
+      50% { transform: scale(1.12); }
+    }
+    @media (max-width: 576px) {
+      .whatsapp-btn { right: 18px; bottom: 18px; }
+    }
+
+  </style>
+</head>
+<body>
+  <!-- Background decor -->
+  <div class="bg-grid"></div>
+  <div class="bg-glow glow-1"></div>
+  <div class="bg-glow glow-2"></div>
+  <div class="bg-glow glow-3"></div>
+  <div class="sec-bg" id="secBg" aria-hidden="true">
+    <svg class="sec-svg" viewBox="0 0 260 200" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="secGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="rgba(61,220,132,0.1)"/>
+          <stop offset="45%" stop-color="rgba(140,255,200,0.55)"/>
+          <stop offset="100%" stop-color="rgba(61,220,132,0.15)"/>
+        </linearGradient>
+      </defs>
+
+      <!-- Padlock -->
+      <g class="lock" fill="none" stroke="url(#secGrad)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="70" y="100" width="70" height="60" rx="10"/>
+        <path d="M92 100 V 78 a 13 13 0 0 1 26 0 V 100"/>
+        <circle class="lock-hole" cx="105" cy="128" r="6"/>
+        <path class="lock-keyline" d="M105 134 V 142"/>
+      </g>
+
+      <!-- Key -->
+      <g class="key" fill="none" stroke="url(#secGrad)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+        <circle class="key-head" cx="190" cy="54" r="15"/>
+        <path d="M190 69 V 118"/>
+        <path d="M190 100 L 212 112"/>
+        <path d="M190 112 L 212 124"/>
+        <path class="key-moving" d="M190 69 V 84"/>
+      </g>
+    </svg>
+    <div class="sec-glow" aria-hidden="true"></div>
+  </div>
+  <canvas id="matrixCanvas" aria-hidden="true"></canvas>
+  <div class="aurora a1" aria-hidden="true"></div>
+  <div class="aurora a2" aria-hidden="true"></div>
+  <div class="aurora a3" aria-hidden="true"></div>
+  <div class="bg-particle p1"></div>
+  <div class="bg-particle p2"></div>
+  <div class="bg-particle p3"></div>
+  <div class="bg-pulse-ring" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg fixed-top" id="navbar">
+    <div class="container">
+      <a class="navbar-brand text-white" href="#home">Campusense<span class="dot">.</span>IT</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu" aria-controls="navMenu" aria-expanded="false" aria-label="Toggle navigation" style="border-color:rgba(255,255,255,.2)">
+        <i class="bi bi-list text-white"></i>
+      </button>
+      <div class="collapse navbar-collapse" id="navMenu">
+        <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link" aria-current="page" href="#home">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="#services">Products</a></li>
+          <li class="nav-item"><a class="nav-link" href="#journey">Our Journey</a></li>
+          <li class="nav-item"><a class="nav-link" href="#pricing">Pricing</a></li>
+          <li class="nav-item"><a class="nav-link" href="#testimonials">Testimonials</a></li>
+        </ul>
+        <div class="d-flex gap-2">
+          <a href="#contact" class="btn btn-ghost btn-sm">Sign in</a>
+          <a href="#contact" class="btn btn-green btn-sm">Get a Demo</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="hero" id="home">
+    <div class="container">
+      <div class="row align-items-center g-5">
+        <div class="col-lg-6 reveal">
+          <span class="badge-pill"><span class="pulse"></span> Trusted Enterprise Technology Partner</span>
+          <h1 class="hero-title text-white">
+            Enterprise Software.<br />
+            <span class="grad-text shimmer-text">Intelligence</span> Built For Growth.
+          </h1>
+          <p class="hero-sub">
+            Campusense IT delivers ERP, SaaS, Generative AI and AI Voice Agents that transform
+            how modern businesses operate — elegant, secure, and engineered to scale.
+          </p>
+          <div class="hero-cta">
+            <a href="#contact" class="btn btn-green btn-glow btn-lg px-4">Book a Free Demo <i class="bi bi-arrow-right ms-2"></i></a>
+            <a href="#services" class="btn btn-ghost btn-lg px-4">Explore Solutions</a>
+          </div>
+          <div class="trust">
+            <div class="avatars">
+              <span>AK</span><span>RS</span><span>MJ</span><span>+</span>
+            </div>
+            <div>
+              <div><i class="bi bi-star-fill" style="color:var(--green)"></i><i class="bi bi-star-fill" style="color:var(--green)"></i><i class="bi bi-star-fill" style="color:var(--green)"></i><i class="bi bi-star-fill" style="color:var(--green)"></i><i class="bi bi-star-fill" style="color:var(--green)"></i></div>
+              Trusted by <strong class="text-white">200+</strong> forward-thinking companies
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6 reveal">
+          <div class="hero-visual">
+            <div class="tech-ring hero-ring-1"></div>
+            <div class="tech-ring hero-ring-2"></div>
+            <div class="orbit-ring"></div>
+            <div class="floating-chip chip-1"><i class="bi bi-cpu me-2" style="color:var(--green)"></i>AI Active</div>
+            <div class="floating-chip chip-2"><i class="bi bi-shield-check me-2" style="color:var(--green)"></i>99.9% Uptime</div>
+            <div class="floating-chip chip-3"><i class="bi bi-lightning-charge me-2" style="color:var(--green)"></i>+42% Efficiency</div>
+            <div class="dashboard-card">
+              <div class="d-head">
+                <div class="dots"><span style="background:#3a4a40"></span><span style="background:#3a4a40"></span><span style="background:var(--green)"></span></div>
+                <span class="d-title">Campusense Intelligence Dashboard</span>
+              </div>
+              <div class="kpi">
+                <div class="kpi-box"><div class="lbl">Revenue</div><div class="val up">+38%</div></div>
+                <div class="kpi-box"><div class="lbl">Agents</div><div class="val">2.4K</div></div>
+                <div class="kpi-box"><div class="lbl">Automation</div><div class="val up">92%</div></div>
+              </div>
+              <div class="chart-bars">
+                <span style="height:30%"></span><span style="height:48%"></span><span style="height:38%"></span>
+                <span style="height:60%"></span><span style="height:52%"></span><span style="height:74%"></span>
+                <span style="height:66%"></span><span style="height:88%"></span><span style="height:100%"></span>
+              </div>
+              <div class="ai-msg">
+                <i class="bi bi-stars"></i>
+                <p><strong>AI Copilot:</strong> "ERP orders up 22% this week. I've queued automated reorder recommendations for review."</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="scroll-ind" aria-hidden="true">
+        <span>Scroll</span>
+        <div class="mouse"><div class="wheel"></div></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MARQUEE -->
+  <div class="marquee-wrap">
+    <div class="marquee">
+      <span><i class="bi bi-bounding-box"></i>ERP SOLUTIONS</span>
+      <span><i class="bi bi-cloud"></i>SAAS PLATFORMS</span>
+      <span><i class="bi bi-mic"></i>AI VOICE AGENTS</span>
+      <span><i class="bi bi-stars"></i>GENERATIVE AI</span>
+      <span><i class="bi bi-diagram-3"></i>IT CONSULTANCY</span>
+      <span><i class="bi bi-headset"></i>24/7 CUSTOMER SUPPORT</span>
+      <span><i class="bi bi-bounding-box"></i>ERP SOLUTIONS</span>
+      <span><i class="bi bi-cloud"></i>SAAS PLATFORMS</span>
+      <span><i class="bi bi-mic"></i>AI VOICE AGENTS</span>
+      <span><i class="bi bi-stars"></i>GENERATIVE AI</span>
+      <span><i class="bi bi-diagram-3"></i>IT CONSULTANCY</span>
+      <span><i class="bi bi-headset"></i>24/7 CUSTOMER SUPPORT</span>
+    </div>
+  </div>
+
+  <!-- PRODUCTS / SERVICES -->
+  <section id="services" class="py-5" style="padding-top:6rem!important">
+    <div class="container">
+      <div class="text-center mb-5 reveal">
+        <span class="eyebrow">What We Do</span>
+        <h2 class="section-title text-white mt-2">Products That Power Progress</h2>
+        <p class="section-sub mx-auto mt-3">A complete suite of enterprise-grade solutions engineered to give your business a technological edge.</p>
+      </div>
+      <div class="row g-4">
+        <div class="col-md-6 col-lg-4 reveal swirl-card">
+          <div class="card-modern">
+            <div class="icon-wrap"><i class="bi bi-bounding-box-circles"></i></div>
+            <h5 class="text-white">ERP Solutions</h5>
+            <p>Integrated enterprise resource planning that unifies finance, operations, supply chain, and HR into one intelligent system.</p>
+            <a class="learn" href="#pricing">Learn more <i class="bi bi-arrow-right"></i></a>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4 reveal swirl-card">
+          <div class="card-modern">
+            <div class="icon-wrap"><i class="bi bi-cloud-arrow-up"></i></div>
+            <h5 class="text-white">SaaS Platforms</h5>
+            <p>Cloud-native software delivered as a service — scalable, secure, and accessible anywhere in the world.</p>
+            <a class="learn" href="#pricing">Learn more <i class="bi bi-arrow-right"></i></a>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4 reveal swirl-card">
+          <div class="card-modern">
+            <div class="icon-wrap"><i class="bi bi-mic"></i></div>
+            <h5 class="text-white">AI Voice Agents</h5>
+            <p>Human-like voice assistants that answer, route, and resolve customer calls around the clock with natural conversation.</p>
+            <a class="learn" href="#pricing">Learn more <i class="bi bi-arrow-right"></i></a>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4 reveal swirl-card">
+          <div class="card-modern">
+            <div class="icon-wrap"><i class="bi bi-stars"></i></div>
+            <h5 class="text-white">Generative AI</h5>
+            <p>Custom LLM solutions that automate content, analyse data, and surface intelligence your team can act on instantly.</p>
+            <a class="learn" href="#pricing">Learn more <i class="bi bi-arrow-right"></i></a>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4 reveal swirl-card">
+          <div class="card-modern">
+            <div class="icon-wrap"><i class="bi bi-diagram-3"></i></div>
+            <h5 class="text-white">IT Consultancy</h5>
+            <p>Strategic technology roadmaps and architecture guidance from senior consultants who understand your objectives.</p>
+            <a class="learn" href="#contact">Learn more <i class="bi bi-arrow-right"></i></a>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4 reveal swirl-card">
+          <div class="card-modern">
+            <div class="icon-wrap"><i class="bi bi-headset"></i></div>
+            <h5 class="text-white">Customer Support</h5>
+            <p>24/7 premium support with dedicated teams and AI-assisted resolution to keep your operations running smoothly.</p>
+            <a class="learn" href="#contact">Learn more <i class="bi bi-arrow-right"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <section class="py-5">
+    <div class="container">
+      <div class="row text-center g-4 reveal">
+        <div class="col-6 col-lg-3">
+          <div class="stat-icon"><i class="bi bi-buildings"></i></div>
+          <h3 class="stat-num grad-text shimmer-text" style="font-weight:800;font-size:2.4rem"><span class="count" data-count="200">0</span>+</h3>
+          <p class="text-muted mt-1">Enterprise Clients</p>
+        </div>
+        <div class="col-6 col-lg-3">
+          <div class="stat-icon"><i class="bi bi-rocket-takeoff"></i></div>
+          <h3 class="stat-num grad-text shimmer-text" style="font-weight:800;font-size:2.4rem"><span class="count" data-count="500">0</span>+</h3>
+          <p class="text-muted mt-1">Projects Delivered</p>
+        </div>
+        <div class="col-6 col-lg-3">
+          <div class="stat-icon"><i class="bi bi-heart-pulse"></i></div>
+          <h3 class="stat-num grad-text shimmer-text" style="font-weight:800;font-size:2.4rem"><span class="count" data-count="99">0</span>%</h3>
+          <p class="text-muted mt-1">Client Retention</p>
+        </div>
+        <div class="col-6 col-lg-3">
+          <div class="stat-icon"><i class="bi bi-headset"></i></div>
+          <h3 class="stat-num grad-text shimmer-text" style="font-weight:800;font-size:2.4rem"><span class="count" data-count="24">0</span>/7</h3>
+          <p class="text-muted mt-1">Premium Support</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- JOURNEY -->
+  <section id="journey" class="py-5" style="padding-top:5rem!important">
+    <div class="container">
+      <div class="text-center mb-5 reveal">
+        <span class="eyebrow">Our Journey</span>
+        <h2 class="section-title text-white mt-2">A Story Of Innovation</h2>
+        <p class="section-sub mx-auto mt-3">From a bold idea to a trusted name in enterprise technology. Pick a year to see the milestone.</p>
+      </div>
+
+      <div class="journey-shell reveal">
+        <div class="j-rail" id="journeyRail" role="tablist" aria-label="Company milestones" aria-orientation="vertical">
+          <span class="j-rail-fill" aria-hidden="true"></span>
+
+          <button class="j-node" type="button" role="tab" id="jTab0" aria-controls="jPanel0" aria-selected="true" tabindex="0">
+            <span class="jn-year">2020</span>
+            <span class="jn-era">Founded</span>
+          </button>
+          <button class="j-node" type="button" role="tab" id="jTab1" aria-controls="jPanel1" aria-selected="false" tabindex="-1">
+            <span class="jn-year">2022</span>
+            <span class="jn-era">Scaling</span>
+          </button>
+          <button class="j-node" type="button" role="tab" id="jTab2" aria-controls="jPanel2" aria-selected="false" tabindex="-1">
+            <span class="jn-year">2024</span>
+            <span class="jn-era">The AI Era</span>
+          </button>
+          <button class="j-node" type="button" role="tab" id="jTab3" aria-controls="jPanel3" aria-selected="false" tabindex="-1">
+            <span class="jn-year">2026</span>
+            <span class="jn-era">Today</span>
+          </button>
+        </div>
+
+        <div class="j-stage">
+          <article class="j-panel is-active" role="tabpanel" id="jPanel0" aria-labelledby="jTab0" tabindex="0">
+            <div class="j-copy">
+              <div class="j-panel-top">
+                <span class="j-icon"><i class="bi bi-rocket-takeoff"></i></span>
+                <div>
+                  <div class="j-year-big">2020</div>
+                  <div class="j-era">Founded</div>
+                </div>
+              </div>
+              <h5 class="text-white">Where It All Began</h5>
+              <p>Campusense IT was founded with a single mission — to bring enterprise-grade intelligence within reach of every growing business.</p>
+              <ul class="j-chips">
+                <li>Mission locked</li>
+                <li>Enterprise-first thinking</li>
+              </ul>
+            </div>
+            <div class="j-art j-art-origin" aria-hidden="true">
+              <svg viewBox="0 0 200 200" focusable="false" role="presentation">
+                <defs>
+                  <radialGradient id="jOriginCore" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" stop-color="#8fffc2"/>
+                    <stop offset="60%" stop-color="#3ddc84"/>
+                    <stop offset="100%" stop-color="#1ea35e"/>
+                  </radialGradient>
+                </defs>
+                <circle class="halo spin-slow" cx="100" cy="100" r="88" stroke-dasharray="2 10"/>
+                <circle class="ln-soft spin-rev" cx="100" cy="100" r="72"/>
+                <circle class="ln-soft spin-mid" cx="100" cy="100" r="56" stroke-dasharray="30 14"/>
+                <circle class="ln-soft" cx="100" cy="100" r="38" stroke-dasharray="1 6"/>
+                <g class="spin-slow" style="animation-duration:14s">
+                  <circle class="dot twinkle" cx="100" cy="16" r="3.4"/>
+                  <circle class="dot twinkle" cx="184" cy="100" r="2.4" style="animation-delay:.9s"/>
+                  <circle class="dot twinkle" cx="100" cy="184" r="2.8" style="animation-delay:1.8s"/>
+                </g>
+                <g class="orbit-core breathe">
+                  <circle cx="100" cy="100" r="17" fill="url(#jOriginCore)"/>
+                  <circle class="ln" cx="100" cy="100" r="26" opacity=".5"/>
+                </g>
+                <path class="ln" d="M100 74 L100 62" opacity=".55"/>
+                <path class="ln" d="M126 100 L138 100" opacity=".55"/>
+                <path class="ln" d="M100 126 L100 138" opacity=".55"/>
+                <path class="ln" d="M74 100 L62 100" opacity=".55"/>
+              </svg>
+            </div>
+          </article>
+
+          <article class="j-panel" role="tabpanel" id="jPanel1" aria-labelledby="jTab1" tabindex="0">
+            <div class="j-copy">
+              <div class="j-panel-top">
+                <span class="j-icon"><i class="bi bi-bar-chart-line"></i></span>
+                <div>
+                  <div class="j-year-big">2022</div>
+                  <div class="j-era">Scaling</div>
+                </div>
+              </div>
+              <h5 class="text-white">First 50 Enterprise Clients</h5>
+              <p>We launched our flagship ERP and SaaS suite, onboarding 50 enterprises and building a support model renowned for its responsiveness.</p>
+              <ul class="j-chips">
+                <li>50 enterprise clients</li>
+                <li>Flagship ERP + SaaS</li>
+                <li>Responsive support model</li>
+              </ul>
+            </div>
+            <div class="j-art j-art-growth" aria-hidden="true">
+              <svg viewBox="0 0 200 200" focusable="false" role="presentation">
+                <defs>
+                  <linearGradient id="jArtGrad" x1="0" y1="1" x2="0" y2="0">
+                    <stop offset="0%" stop-color="#1ea35e"/>
+                    <stop offset="100%" stop-color="#3ddc84"/>
+                  </linearGradient>
+                </defs>
+                <circle class="halo" cx="100" cy="100" r="90" stroke-dasharray="1 9"/>
+                <line class="ln-soft" x1="30" y1="152" x2="172" y2="152"/>
+                <line class="ln-soft" x1="30" y1="118" x2="172" y2="118" stroke-dasharray="3 6"/>
+                <line class="ln-soft" x1="30" y1="84" x2="172" y2="84" stroke-dasharray="3 6"/>
+                <line class="ln-soft" x1="30" y1="50" x2="172" y2="50" stroke-dasharray="3 6"/>
+                <g class="bar-3 rise" style="animation-delay:.05s"><rect x="42" y="120" width="16" height="32" rx="4"/></g>
+                <g class="bar-2 rise" style="animation-delay:.16s"><rect x="66" y="102" width="16" height="50" rx="4"/></g>
+                <g class="bar-2 rise" style="animation-delay:.27s"><rect x="90" y="82" width="16" height="70" rx="4"/></g>
+                <g class="bar rise" style="animation-delay:.38s"><rect x="114" y="58" width="16" height="94" rx="4"/></g>
+                <g class="bar rise" style="animation-delay:.49s"><rect x="138" y="34" width="16" height="118" rx="4"/></g>
+                <path class="ln draw" d="M50 112 L74 92 L98 70 L122 46 L146 26" style="animation-delay:.6s"/>
+                <circle class="dot pulse-node" cx="146" cy="26" r="5"/>
+                <g class="spin-slow" style="animation-duration:20s">
+                  <circle class="ln-soft" cx="100" cy="100" r="70" stroke-dasharray="20 40"/>
+                </g>
+              </svg>
+            </div>
+          </article>
+
+          <article class="j-panel" role="tabpanel" id="jPanel2" aria-labelledby="jTab2" tabindex="0">
+            <div class="j-copy">
+              <div class="j-panel-top">
+                <span class="j-icon"><i class="bi bi-cpu"></i></span>
+                <div>
+                  <div class="j-year-big">2024</div>
+                  <div class="j-era">The AI Era</div>
+                </div>
+              </div>
+              <h5 class="text-white">Generative AI &amp; Voice Agents</h5>
+              <p>We pioneered AI voice agents and custom generative solutions, automating workflows and redefining customer experiences at scale.</p>
+              <ul class="j-chips">
+                <li>AI voice agents</li>
+                <li>Custom generative solutions</li>
+                <li>Workflow automation</li>
+              </ul>
+            </div>
+            <div class="j-art j-art-mesh" aria-hidden="true">
+              <svg viewBox="0 0 200 200" focusable="false" role="presentation">
+                <circle class="halo spin-rev" cx="100" cy="100" r="88" stroke-dasharray="26 12"/>
+                <g class="mesh">
+                  <path d="M46 52 L100 34 L154 52"/>
+                  <path d="M46 52 L100 100 L154 52"/>
+                  <path d="M46 52 L100 100"/>
+                  <path d="M154 52 L100 100"/>
+                  <path d="M100 34 L100 100"/>
+                  <path d="M46 52 L38 100 L62 146"/>
+                  <path d="M154 52 L162 100 L138 146"/>
+                  <path d="M100 100 L62 146"/>
+                  <path d="M100 100 L138 146"/>
+                  <path d="M38 100 L62 146"/>
+                  <path d="M162 100 L138 146"/>
+                  <path d="M46 52 L154 52"/>
+                  <path d="M100 34 L46 52"/>
+                  <path d="M100 34 L154 52"/>
+                  <path d="M38 100 L100 100"/>
+                  <path d="M162 100 L100 100"/>
+                </g>
+                <circle class="synapse" cx="46" cy="52" r="4.5"/>
+                <circle class="synapse pulse-node" cx="100" cy="34" r="5.5" style="animation-delay:.3s"/>
+                <circle class="synapse" cx="154" cy="52" r="4.5"/>
+                <circle class="synapse breathe" cx="100" cy="100" r="9" style="animation-delay:.5s"/>
+                <circle class="synapse" cx="38" cy="100" r="4"/>
+                <circle class="synapse pulse-node" cx="162" cy="100" r="4" style="animation-delay:1.1s"/>
+                <circle class="synapse" cx="62" cy="146" r="4.5"/>
+                <circle class="synapse" cx="138" cy="146" r="4.5"/>
+                <g class="spin-slow" style="animation-duration:22s">
+                  <circle class="dot twinkle" cx="100" cy="14" r="2.6"/>
+                  <circle class="dot twinkle" cx="186" cy="100" r="2.2" style="animation-delay:1.2s"/>
+                </g>
+              </svg>
+            </div>
+          </article>
+
+          <article class="j-panel" role="tabpanel" id="jPanel3" aria-labelledby="jTab3" tabindex="0">
+            <div class="j-copy">
+              <div class="j-panel-top">
+                <span class="j-icon"><i class="bi bi-globe2"></i></span>
+                <div>
+                  <div class="j-year-big">2026</div>
+                  <div class="j-era">Today</div>
+                </div>
+              </div>
+              <h5 class="text-white">A Global Innovation Partner</h5>
+              <p>Over 200 clients and 500 projects later, we remain obsessed with one thing — building technology that drives real business growth.</p>
+              <ul class="j-chips">
+                <li>200+ clients</li>
+                <li>500+ projects</li>
+                <li>Global delivery</li>
+              </ul>
+            </div>
+            <div class="j-art j-art-orbit" aria-hidden="true">
+              <svg viewBox="0 0 200 200" focusable="false" role="presentation">
+                <defs>
+                  <radialGradient id="jGlobe" cx="38%" cy="32%" r="72%">
+                    <stop offset="0%" stop-color="rgba(61,220,132,.30)"/>
+                    <stop offset="100%" stop-color="rgba(30,163,94,.05)"/>
+                  </radialGradient>
+                </defs>
+                <circle class="halo spin-slow" cx="100" cy="100" r="90" stroke-dasharray="2 12"/>
+                <circle cx="100" cy="100" r="46" fill="url(#jGlobe)"/>
+                <circle class="ln" cx="100" cy="100" r="46" opacity=".8"/>
+                <ellipse class="meridian" cx="100" cy="100" rx="46" ry="16"/>
+                <ellipse class="meridian" cx="100" cy="100" rx="46" ry="31"/>
+                <ellipse class="meridian" cx="100" cy="100" rx="16" ry="46"/>
+                <ellipse class="meridian" cx="100" cy="100" rx="31" ry="46"/>
+                <line class="meridian" x1="54" y1="100" x2="146" y2="100"/>
+                <g class="spin-mid" style="animation-duration:12s">
+                  <ellipse class="ln" cx="100" cy="100" rx="80" ry="27" opacity=".55" transform="rotate(-22 100 100)"/>
+                  <circle class="sat-dot" cx="180" cy="100" r="4.5"/>
+                </g>
+                <g class="spin-rev" style="animation-duration:17s">
+                  <ellipse class="ln-soft" cx="100" cy="100" rx="70" ry="70" transform="rotate(58 100 100)" stroke-dasharray="14 10"/>
+                  <circle class="dot twinkle" cx="170" cy="100" r="3" style="animation-delay:.6s"/>
+                </g>
+                <g class="breathe">
+                  <circle class="ln" cx="100" cy="100" r="58" opacity=".3"/>
+                </g>
+                <g class="spin-slow" style="animation-duration:28s">
+                  <circle class="dot twinkle" cx="100" cy="34" r="2.4"/>
+                </g>
+              </svg>
+            </div>
+          </article>
+
+          <div class="j-foot">
+            <div>
+              <span class="j-progress-text" id="jCounter" aria-live="polite">01 / 04</span>
+              <div class="j-tick" id="jTick" aria-hidden="true"><span></span></div>
+            </div>
+            <div class="j-nav">
+              <button class="j-btn" type="button" id="jToggle" aria-label="Pause automatic milestone rotation" aria-pressed="false">
+                <i class="bi bi-pause-fill" id="jToggleIcon"></i>
+              </button>
+              <button class="j-btn" type="button" id="jPrev" aria-label="Previous milestone"><i class="bi bi-arrow-left"></i></button>
+              <button class="j-btn" type="button" id="jNext" aria-label="Next milestone"><i class="bi bi-arrow-right"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section id="pricing" class="py-5" style="padding-top:5rem!important">
+    <div class="container">
+      <div class="text-center mb-5 reveal">
+        <span class="eyebrow">Pricing</span>
+        <h2 class="section-title text-white mt-2">Plans For Every Stage</h2>
+        <p class="section-sub mx-auto mt-3">Transparent pricing with no hidden fees. Scale up whenever you're ready.</p>
+      </div>
+      <div class="price-rig">
+        <svg class="rig-line" viewBox="0 0 1000 60" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+          <path class="rope-fibre" d="M4,8 Q500,52 996,8" vector-effect="non-scaling-stroke"/>
+          <path class="rope" d="M4,8 Q500,52 996,8" vector-effect="non-scaling-stroke"/>
+          <circle class="post-cap" cx="4" cy="8" r="6" vector-effect="non-scaling-stroke"/>
+          <circle class="post-cap" cx="996" cy="8" r="6" vector-effect="non-scaling-stroke"/>
+        </svg>
+        <div class="row g-4 align-items-stretch">
+        <div class="col-lg-4 reveal">
+          <div class="hang hang-1">
+          <div class="peg" aria-hidden="true">
+            <svg width="18" height="88" viewBox="0 0 18 88" focusable="false">
+              <path class="cord" d="M9,64 V21"/>
+              <path class="knot-under" d="M9,21 C5,20 3.5,15 5,11.5"/>
+              <path class="knot-over" d="M5,11.5 C7,8 13,8 14.5,12.5"/>
+              <path class="knot-over" d="M14.5,12.5 C15.5,17 13,20.5 9.5,21.5"/>
+              <path class="clip-body" d="M3.5,64 h11 a2,2 0 0 1 2,2 v19.5 a2,2 0 0 1 -2,2 h-11 a2,2 0 0 1 -2,-2 v-19.5 a2,2 0 0 1 2,-2 z"/>
+              <path class="clip-jaw" d="M5.5,71 h7 M5.5,77 h7"/>
+            </svg>
+          </div>
+          <div class="price-card h-100">
+            <div class="plan">Starter</div>
+            <div class="amount-label">Starts from</div>
+            <div class="amount text-white">$499</div>
+            <p class="text-muted mt-1" style="font-size:.9rem">For startups getting started</p>
+            <ul>
+              <li><i class="bi bi-check-circle-fill"></i> Core ERP module</li>
+              <li><i class="bi bi-check-circle-fill"></i> Up to 20 users</li>
+              <li><i class="bi bi-check-circle-fill"></i> Standard email support</li>
+              <li><i class="bi bi-check-circle-fill"></i> Data security & backups</li>
+            </ul>
+            <a href="#contact" class="btn btn-ghost w-100">Choose Starter</a>
+          </div>
+          </div>
+        </div>
+        <div class="col-lg-4 reveal">
+          <div class="hang hang-2">
+          <div class="peg" aria-hidden="true">
+            <svg width="18" height="88" viewBox="0 0 18 88" focusable="false">
+              <path class="cord" d="M9,64 V25"/>
+              <path class="knot-under" d="M9,25 C5,24 3.5,19 5,15.5"/>
+              <path class="knot-over" d="M5,15.5 C7,12 13,12 14.5,16.5"/>
+              <path class="knot-over" d="M14.5,16.5 C15.5,21 13,24.5 9.5,25.5"/>
+              <path class="clip-body" d="M3.5,64 h11 a2,2 0 0 1 2,2 v19.5 a2,2 0 0 1 -2,2 h-11 a2,2 0 0 1 -2,-2 v-19.5 a2,2 0 0 1 2,-2 z"/>
+              <path class="clip-jaw" d="M5.5,71 h7 M5.5,77 h7"/>
+            </svg>
+          </div>
+          <div class="price-card featured h-100">
+            <div class="tag">Popular</div>
+            <div class="plan">Growth</div>
+            <div class="amount-label">Starts from</div>
+            <div class="amount grad-text">$999</div>
+            <p class="text-muted mt-1" style="font-size:.9rem">For scaling businesses</p>
+            <ul>
+              <li><i class="bi bi-check-circle-fill"></i> Full ERP + SaaS suite</li>
+              <li><i class="bi bi-check-circle-fill"></i> Up to 100 users</li>
+              <li><i class="bi bi-check-circle-fill"></i> 2 AI Voice Agents</li>
+              <li><i class="bi bi-check-circle-fill"></i> Generative AI copilot</li>
+              <li><i class="bi bi-check-circle-fill"></i> Priority 24/7 support</li>
+            </ul>
+            <a href="#contact" class="btn btn-green w-100">Choose Growth</a>
+          </div>
+          </div>
+        </div>
+        <div class="col-lg-4 reveal">
+          <div class="hang hang-3">
+          <div class="peg" aria-hidden="true">
+            <svg width="18" height="88" viewBox="0 0 18 88" focusable="false">
+              <path class="cord" d="M9,64 V21"/>
+              <path class="knot-under" d="M9,21 C5,20 3.5,15 5,11.5"/>
+              <path class="knot-over" d="M5,11.5 C7,8 13,8 14.5,12.5"/>
+              <path class="knot-over" d="M14.5,12.5 C15.5,17 13,20.5 9.5,21.5"/>
+              <path class="clip-body" d="M3.5,64 h11 a2,2 0 0 1 2,2 v19.5 a2,2 0 0 1 -2,2 h-11 a2,2 0 0 1 -2,-2 v-19.5 a2,2 0 0 1 2,-2 z"/>
+              <path class="clip-jaw" d="M5.5,71 h7 M5.5,77 h7"/>
+            </svg>
+          </div>
+          <div class="price-card h-100">
+            <div class="plan">Enterprise</div>
+            <div class="amount-label">Priced to fit</div>
+            <div class="amount text-white">Custom</div>
+            <p class="text-muted mt-1" style="font-size:.9rem">For organisations at scale</p>
+            <ul>
+              <li><i class="bi bi-check-circle-fill"></i> Unlimited everything</li>
+              <li><i class="bi bi-check-circle-fill"></i> Unlimited AI Voice Agents</li>
+              <li><i class="bi bi-check-circle-fill"></i> Dedicated IT consultancy</li>
+              <li><i class="bi bi-check-circle-fill"></i> Custom integrations</li>
+              <li><i class="bi bi-check-circle-fill"></i> White-glove support</li>
+            </ul>
+            <a href="#contact" class="btn btn-ghost w-100">Contact Sales</a>
+          </div>
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section id="testimonials" class="py-5" style="padding-top:5rem!important">
+    <div class="container">
+      <div class="text-center mb-5 reveal">
+        <span class="eyebrow">Testimonials</span>
+        <h2 class="section-title text-white mt-2">Loved By Our Clients</h2>
+        <p class="section-sub mx-auto mt-3">Real feedback from leaders who've transformed their operations with Campusense.</p>
+      </div>
+      <div class="row g-4">
+        <div class="col-md-6 col-lg-4 reveal">
+          <div class="t-card">
+            <div class="t-stars"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></div>
+            <blockquote>"Campusense rebuilt our entire ERP and the AI voice agent cut our call handling time in half. Truly transformative partners."</blockquote>
+            <div class="t-person">
+              <div class="avatar-only">AR</div>
+              <div><h6 class="text-white">Amina Raza</h6><small>COO, Nexa Retail Group</small></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4 reveal">
+          <div class="t-card">
+            <div class="t-stars"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></div>
+            <blockquote>"Their generative AI solutions have automated our reporting completely. The team is sharp, responsive and endlessly professional."</blockquote>
+            <div class="t-person">
+              <div class="avatar-only">DK</div>
+              <div><h6 class="text-white">Daniel Kim</h6><small>CTO, Meridian Logistics</small></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4 reveal">
+          <div class="t-card">
+            <div class="t-stars"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></div>
+            <blockquote>"From the first consultation to go-live, Campusense felt like an extension of our own team. The support is unmatched."</blockquote>
+            <div class="t-person">
+              <div class="avatar-only">SO</div>
+              <div><h6 class="text-white">Sarah Okafor</h6><small>VP Operations, Beacon Health</small></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="py-5" style="padding-top:5rem!important">
+    <div class="container">
+      <div class="row g-5 align-items-center">
+        <div class="col-lg-5 reveal">
+          <span class="eyebrow">Contact Us</span>
+          <h2 class="section-title text-white mt-2 mb-3">Let's Build Something Great Together</h2>
+          <p class="section-sub mb-4">Tell us about your goals and our consultants will reach out within 24 hours to map the right solution.</p>
+          <div class="contact-info-item">
+            <div class="ci"><i class="bi bi-geo-alt"></i></div>
+            <div><h6 class="text-white">Our Office</h6><p>Lucknow, Uttar Pradesh, India</p></div>
+          </div>
+          <div class="contact-info-item">
+            <div class="ci"><i class="bi bi-envelope"></i></div>
+            <div><h6 class="text-white">Email Us</h6><p>info@campusense.in</p></div>
+          </div>
+          <div class="contact-info-item">
+            <div class="ci"><i class="bi bi-telephone"></i></div>
+            <div><h6 class="text-white">Call Us</h6><p>+91 745 993 5119</p></div>
+          </div>
+        </div>
+
+        <div class="col-lg-7 reveal">
+          <div class="contact-card">
+            <form id="contactForm" onsubmit="handleSubmit(event)">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label">Full Name</label>
+                  <input type="text" name="name" class="form-control" placeholder="Jane Doe" required />
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Work Email</label>
+                  <input type="email" name="email" class="form-control" placeholder="you@company.com" required />
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Company</label>
+                  <input type="text" name="company" class="form-control" placeholder="Company name" />
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Service of Interest</label>
+                  <select name="service" class="form-select">
+                    <option value="ERP Solutions" selected>ERP Solutions</option>
+                    <option value="SaaS Platforms">SaaS Platforms</option>
+                    <option value="AI Voice Agents">AI Voice Agents</option>
+                    <option value="Generative AI">Generative AI</option>
+                    <option value="IT Consultancy">IT Consultancy</option>
+                    <option value="Customer Support">Customer Support</option>
+                  </select>
+                </div>
+                <div class="col-12">
+                  <label class="form-label">Message</label>
+                  <textarea name="message" class="form-control" rows="4" placeholder="Tell us about your project or requirements..." required></textarea>
+                </div>
+                <div class="col-12">
+                  <button type="submit" id="submitBtn" class="btn btn-green btn-lg w-100">Send Message <i class="bi bi-send ms-2"></i></button>
+                </div>
+                <div id="formMsg" class="d-none text-center"><i class="bi bi-check-circle-fill me-1"></i></div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WhatsApp button -->
+  <a class="whatsapp-btn"
+     href="https://wa.me/917459935119?text=Hi%20Campusense%20IT%2C%20I%27m%20interested%20in%20your%20services.%20Please%20contact%20me."
+     target="_blank" rel="noopener"
+     title="Chat with us on WhatsApp"
+     aria-label="Chat with us on WhatsApp">
+    <i class="bi bi-whatsapp"></i>
+  </a>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="row g-4">
+        <div class="col-lg-4">
+          <a class="brand text-white text-decoration-none" href="#home">Campusense<span class="dot" style="color:var(--green)">.</span>IT</a>
+          <p class="footer-tagline">Enterprise technology partner delivering ERP, SaaS and AI-powered solutions that drive growth.</p>
+          <div class="socials mt-3">
+            <a href="#"><i class="bi bi-linkedin"></i></a>
+            <a href="#"><i class="bi bi-twitter-x"></i></a>
+            <a href="#"><i class="bi bi-github"></i></a>
+            <a href="#"><i class="bi bi-youtube"></i></a>
+          </div>
+        </div>
+        <div class="col-6 col-lg-2">
+          <h6 class="text-white">Company</h6>
+          <a href="#journey">About</a>
+          <a href="#services">Services</a>
+          <a href="#testimonials">Clients</a>
+          <a href="#contact">Careers</a>
+        </div>
+        <div class="col-6 col-lg-3">
+          <h6 class="text-white">Solutions</h6>
+          <a href="#services">ERP Solutions</a>
+          <a href="#services">SaaS Platforms</a>
+          <a href="#services">AI Voice Agents</a>
+          <a href="#services">Generative AI</a>
+        </div>
+        <div class="col-6 col-lg-3">
+          <h6 class="text-white">Get In Touch</h6>
+          <a href="mailto:info@campusense.in">info@campusense.in</a>
+          <a href="tel:+917459935119">+91 745 993 5119</a>
+          <a href="#contact">Request a Demo</a>
+          <a href="#contact">Support Center</a>
+        </div>
+      </div>
+      <div class="d-flex flex-column flex-md-row justify-content-between align-items-center pt-4 mt-4" style="border-top:1px solid var(--border)">
+        <p class="text-muted mb-0" style="font-size:.85rem">© 2026 Campusense IT. All rights reserved.</p>
+        <div class="d-flex gap-4" style="font-size:.85rem">
+          <a href="#" class="text-muted text-decoration-none">Privacy Policy</a>
+          <a href="#" class="text-muted text-decoration-none">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // ===== Matrix falling numbers background =====
+    (function () {
+      const canvas = document.getElementById('matrixCanvas');
+      const ctx = canvas.getContext('2d');
+      const chars = '01'.split('');
+      const fontSize = 16;
+      let columns, drops;
+
+      function init() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        columns = Math.floor(canvas.width / fontSize);
+        drops = Array(columns).fill(1);
+      }
+      init();
+      window.addEventListener('resize', init);
+
+      function draw() {
+        ctx.fillStyle = 'rgba(7, 13, 10, 0.08)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.font = fontSize + 'px monospace';
+        for (let i = 0; i < columns; i++) {
+          const char = chars[Math.floor(Math.random() * chars.length)];
+          ctx.fillStyle = i % 2 === 0 ? 'rgba(61, 220, 132, 0.9)' : 'rgba(31, 163, 94, 0.9)';
+          ctx.fillText(char, i * fontSize, drops[i] * fontSize);
+          if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+          drops[i]++;
+        }
+      }
+      setInterval(draw, 40);
+    })();
+
+    // ===== Interactive hero tilt (3D parallax) =====
+    const heroVisual = document.querySelector('.hero-visual');
+    if (heroVisual) {
+      heroVisual.addEventListener('mousemove', (e) => {
+        const r = heroVisual.getBoundingClientRect();
+        const x = (e.clientX - r.left) / r.width - 0.5;
+        const y = (e.clientY - r.top) / r.height - 0.5;
+        heroVisual.style.transform = 'rotateY(' + (x * 12) + 'deg) rotateX(' + (y * -12) + 'deg)';
+      });
+      heroVisual.addEventListener('mouseleave', () => {
+        heroVisual.style.transform = 'rotateY(0deg) rotateX(0deg)';
+      });
+    }
+
+    // ===== Floating chips subtle parallax with mouse =====
+    const chips = document.querySelectorAll('.floating-chip');
+    const heroArea = document.querySelector('.hero-visual');
+    if (heroArea) {
+      heroArea.addEventListener('mousemove', (e) => {
+        const r = heroArea.getBoundingClientRect();
+        const x = (e.clientX - r.left) / r.width - 0.5;
+        const y = (e.clientY - r.top) / r.height - 0.5;
+        chips.forEach((chip, idx) => {
+          const dx = (idx - 1) * 14;
+          const dy = (idx % 2 === 0 ? -1 : 1) * 10;
+          chip.style.transform = 'translate(' + (x * dx) + 'px,' + (y * dy) + 'px)';
+        });
+      });
+      heroArea.addEventListener('mouseleave', () => {
+        chips.forEach((chip) => { chip.style.transform = ''; });
+      });
+    }
+
+    // ===== Animated gradient title shimmer on hero =====
+    const gradEls = document.querySelectorAll('.grad-text');
+    gradEls.forEach((el) => el.classList.add('shimmer-text'));
+
+    // Navbar scroll state
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 40);
+    });
+
+    // Scroll reveal (with swirl-rotate entrance for product cards)
+    let swirlIndex = 0;
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          if (entry.target.classList.contains('swirl-card')) {
+            const delay = swirlIndex * 160;
+            swirlIndex++;
+            setTimeout(() => entry.target.classList.add('swirl-in'), delay);
+          } else {
+            setTimeout(() => entry.target.classList.add('visible'), i * 60);
+          }
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+
+    // ===== Journey milestone explorer (autoplay + tabs + keyboard) =====
+    (function () {
+      const rail = document.getElementById('journeyRail');
+      if (!rail) return;
+      const shell = document.querySelector('.journey-shell');
+      const nodes = Array.from(rail.querySelectorAll('.j-node'));
+      const panels = Array.from(document.querySelectorAll('.j-panel'));
+      const counter = document.getElementById('jCounter');
+      const tick = document.getElementById('jTick');
+      const total = nodes.length;
+      if (!total) return;
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+      const DELAY = 3000;
+      let current = 0;
+      let timer = null;
+      let playing = !reduced.matches;
+      let inView = false;
+
+      function activate(index, focus) {
+        current = (index + total) % total;
+        nodes.forEach((node, i) => {
+          const active = i === current;
+          node.setAttribute('aria-selected', active ? 'true' : 'false');
+          node.tabIndex = active ? 0 : -1;
+          if (active && focus) node.focus();
+        });
+        panels.forEach((panel, i) => panel.classList.toggle('is-active', i === current));
+        rail.style.setProperty('--j-progress', total > 1 ? current / (total - 1) : 0);
+        if (counter) {
+          counter.textContent = String(current + 1).padStart(2, '0') +
+            ' / ' + String(total).padStart(2, '0');
+        }
+      }
+
+      // Restart the 3s visual tick from zero
+      function restartTick() {
+        if (!tick) return;
+        tick.classList.remove('is-running', 'is-paused');
+        void tick.offsetWidth;
+        if (playing) tick.classList.add('is-running');
+      }
+
+      function schedule() {
+        clearInterval(timer);
+        timer = null;
+        if (!playing || !inView) { restartTick(); return; }
+        restartTick();
+        timer = setInterval(() => activate(current + 1), DELAY);
+      }
+
+      function setPlaying(next) {
+        playing = next;
+        const btn = document.getElementById('jToggle');
+        const icon = document.getElementById('jToggleIcon');
+        if (btn) {
+          btn.setAttribute('aria-pressed', playing ? 'false' : 'true');
+          btn.setAttribute('aria-label', playing ? 'Pause automatic milestone rotation' : 'Resume automatic milestone rotation');
+        }
+        if (icon) icon.className = playing ? 'bi bi-pause-fill' : 'bi bi-play-fill';
+        schedule();
+      }
+
+      // Manual control restarts the dwell so autoplay never cuts a click short
+      nodes.forEach((node, i) => node.addEventListener('click', () => { activate(i); restartTick(); }));
+
+      rail.addEventListener('keydown', (e) => {
+        const step = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 }[e.key];
+        if (step) { e.preventDefault(); activate(current + step, true); restartTick(); }
+        else if (e.key === 'Home') { e.preventDefault(); activate(0, true); restartTick(); }
+        else if (e.key === 'End') { e.preventDefault(); activate(total - 1, true); restartTick(); }
+      });
+
+      const prevBtn = document.getElementById('jPrev');
+      const nextBtn = document.getElementById('jNext');
+      const toggleBtn = document.getElementById('jToggle');
+      if (prevBtn) prevBtn.addEventListener('click', () => { activate(current - 1); restartTick(); });
+      if (nextBtn) nextBtn.addEventListener('click', () => { activate(current + 1); restartTick(); });
+      if (toggleBtn) toggleBtn.addEventListener('click', () => setPlaying(!playing));
+
+      // Pause while the user is reading, hovering, or keyboard-focused
+      if (shell) {
+        shell.addEventListener('mouseenter', () => {
+          if (tick) tick.classList.add('is-paused');
+          clearInterval(timer); timer = null;
+        });
+        shell.addEventListener('mouseleave', () => {
+          if (!document.activeElement || !shell.contains(document.activeElement)) schedule();
+        });
+        shell.addEventListener('focusin', () => {
+          if (tick) tick.classList.add('is-paused');
+          clearInterval(timer); timer = null;
+        });
+        shell.addEventListener('focusout', (e) => {
+          if (!shell.contains(e.relatedTarget)) schedule();
+        });
+      }
+
+      // Only rotate while the section is actually on screen
+      const section = document.getElementById('journey');
+      if (section && 'IntersectionObserver' in window) {
+        new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            inView = entry.isIntersecting;
+            schedule();
+          });
+        }, { threshold: 0.35 }).observe(section);
+      } else {
+        inView = true;
+      }
+
+      // Reduced-motion users get the static first milestone unless they opt in
+      if (reduced.addEventListener) {
+        reduced.addEventListener('change', (e) => setPlaying(!e.matches));
+      }
+
+      // Rail turns horizontal under 992px — keep the a11y orientation honest
+      const compact = window.matchMedia('(max-width: 991.98px)');
+      const syncOrientation = () => {
+        rail.setAttribute('aria-orientation', compact.matches ? 'horizontal' : 'vertical');
+      };
+      syncOrientation();
+      if (compact.addEventListener) compact.addEventListener('change', syncOrientation);
+
+      activate(0);
+      if (tick) {
+        tick.classList.toggle('is-paused', !playing);
+        tick.classList.toggle('is-running', playing);
+      }
+      const icon0 = document.getElementById('jToggleIcon');
+      if (icon0 && !playing) icon0.className = 'bi bi-play-fill';
+      const btn0 = document.getElementById('jToggle');
+      if (btn0) {
+        btn0.setAttribute('aria-pressed', playing ? 'false' : 'true');
+        if (!playing) btn0.setAttribute('aria-label', 'Resume automatic milestone rotation');
+      }
+      if (!section || !('IntersectionObserver' in window)) schedule();
+    })();
+
+    // Animated counters
+    const countObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        const el = entry.target;
+        const target = +el.dataset.count;
+        let current = 0;
+        const step = Math.max(1, Math.floor(target / 60));
+        const timer = setInterval(() => {
+          current += step;
+          if (current >= target) { current = target; clearInterval(timer); }
+          el.textContent = current;
+        }, 25);
+        countObserver.unobserve(el);
+      });
+    }, { threshold: 0.5 });
+    document.querySelectorAll('.count').forEach((el) => countObserver.observe(el));
+
+    // Animated chart bars re-trigger on scroll
+    const barObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.querySelectorAll('.chart-bars span').forEach((span) => {
+            span.style.animation = 'none';
+            span.offsetHeight;
+            span.style.animation = 'grow 1.4s cubic-bezier(.16,1,.3,1) forwards';
+            span.style.animationDelay = Math.random() * .3 + 's';
+          });
+        }
+      });
+    }, { threshold: 0.4 });
+    document.querySelectorAll('.hero-visual').forEach((el) => barObserver.observe(el));
+
+    // Contact form — sends submission to the backend which emails it
+    function handleSubmit(e) {
+      e.preventDefault();
+      const form = e.target;
+      const btn = document.getElementById('submitBtn');
+      const msg = document.getElementById('formMsg');
+      const data = {
+        name: form.name.value.trim(),
+        email: form.email.value.trim(),
+        company: form.company.value.trim(),
+        service: form.service.value,
+        message: form.message.value.trim()
+      };
+
+      // Disable the button while sending
+      btn.disabled = true;
+      btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Sending...';
+
+      fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      })
+        .then((res) => res.json().then((json) => ({ ok: res.ok, json })))
+        .then(({ ok, json }) => {
+          msg.className = 'text-center mt-3 ' + (ok ? 'text-success' : 'text-danger');
+          msg.innerHTML = ok
+            ? '<i class="bi bi-check-circle-fill me-1"></i> Thank you, ' + data.name.split(' ')[0] + '! Your message has been sent. We\'ll be in touch shortly.'
+            : '<i class="bi bi-x-circle-fill me-1"></i> ' + (json.error || 'Something went wrong. Please try again.');
+          msg.classList.remove('d-none');
+          if (ok) form.reset();
+        })
+        .catch(() => {
+          msg.className = 'text-center mt-3 text-danger';
+          msg.innerHTML = '<i class="bi bi-x-circle-fill me-1"></i> We could not reach the server. Please try again later.';
+          msg.classList.remove('d-none');
+        })
+        .finally(() => {
+          btn.disabled = false;
+          btn.innerHTML = 'Send Message <i class="bi bi-send ms-2"></i>';
+        });
+
+      // Auto-hide message after a while
+      clearTimeout(msg._t);
+      msg._t = setTimeout(() => msg.classList.add('d-none'), 8000);
+    }
+
+  </script>
+</body>
+</html>

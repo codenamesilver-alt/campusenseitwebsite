@@ -1,0 +1,13 @@
+node_modules
+.env
+.env.local
+.env.*.local
+.opencode
+MI.mp3
+*.mp4
+*.mov
+.git
+.gitignore
+*.log
+npm-debug.log*
+.DS_Store

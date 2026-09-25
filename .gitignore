@@ -1,0 +1,29 @@
+# Secrets — never commit
+.env
+.env.local
+.env.*.local
+
+# Dependencies
+node_modules/
+
+# Vercel
+.vercel
+
+# Agent skill fixtures — 56MB, not part of the site
+.opencode/
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Large binaries
+*.mp3
+*.mp4
+*.mov
+*.zip
